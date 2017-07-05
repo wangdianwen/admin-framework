@@ -1,0 +1,20 @@
+<div class="row">
+        <div class="col-xs-2">
+            <select name="module" id="module" class="form-control" mod="" msg="">
+                <option value=""></option>
+                {foreach from=$modules item=item}
+                <option value="{$item.module}">{$item.module}</option>
+                {/foreach}
+            </select>
+        </div>
+        <div class="col-xs-2">
+            <select name="controller" id="controller" class="form-control" mod="" msg="">
+                {if $post.controller}<option value="{$post.controller}">{$post.controller}</option>{/if}
+            </select>
+        </div>
+    
+        <div class="col-xs-1 form-group">
+            <button type="button" id="search_resource" class="btn btn-primary">查询</button>
+        </div>
+</div>
+

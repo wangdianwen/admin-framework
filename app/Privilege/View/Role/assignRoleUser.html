@@ -1,0 +1,75 @@
+<div id="page-wrapper">
+    <div class="col-xs-12">
+        <h1 class="page-header">用户分配</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="alert alert-success">
+                【角色】{$role_info.name}
+                <br>    
+                【成员】{foreach from=$roleUsers item=user}{$user.name}&nbsp;&nbsp;{/foreach}
+            </div>
+        <div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-xs-8">
+            <div class="panel panel-default">
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>#</th>
+                                    <th>用户名</th>
+                                    <th>邮箱</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {foreach from=$users item=user key=key}
+                                <tr class="">
+                                    <td><input type="checkbox" value="{$user.pk_user_id}" {if $roleUsers[$user.pk_user_id]}checked{/if}></td>
+                                    <td>{$user.pk_user_id}</td>
+                                    <td>{$user.name}</td>
+                                    <td>{$user.email}</td>
+                                </tr>
+                                {/foreach}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.table-responsive -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+        </div>
+        <!-- /.panel -->
+    </div>
+        {$paginate}
+</div>
+<script src="/js/checkform.js"></script>
+<script>
+
+var role_id = {$role_info.pk_role_id};
+$(function() {
+    //权限分配
+    $( "input[type='checkbox']" ).change(function(){
+        var val = $(this).val();
+        var chk = this.checked;
+        if(chk){
+            var assignType = 'add';
+        }else{
+            var assignType = 'del';
+        }
+        $.post("/Privilege/Role/assignRoleUser/", { role_id: role_id, user_id: val, ajaxAct: 'assignDo', assignType: assignType},
+            function(data){
+                console.log(data);
+            });
+    });
+});
+
+select_location('module', '{$post.module}');
+</script>

@@ -1,0 +1,6 @@
+<select name="fid" onchange="changeFmenu(this, 1);" selectNum="1" class="form-control">
+    <option value=""></option>
+    {foreach from=$topMenus item=menu}
+        <option value="{$menu.pk_menu_id}">{$menu.name}</option>
+    {/foreach}
+</select>

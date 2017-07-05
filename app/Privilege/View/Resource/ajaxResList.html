@@ -1,0 +1,15 @@
+{foreach from=$resList item=res key=key}
+<tr class="">
+    <td>{if $listType == 'radio'}<input type="radio" name="resource_id" value="{$res.pk_resource_id}">{else}{$res.pk_resource_id}{/if}</td>
+    <td>{$res.module}</td>
+    <td>{$res.controller}</td>
+    <td>{$res.action}</td>
+    <td>{$res.title}</td>
+    <td>
+        {if $listType != 'radio'}
+        <a href="/Privilege/Resource/resEdit/?res_id={$res.pk_resource_id}">修改</a> | 
+        <a href="/Privilege/Resource/resDel?res_id={$res.pk_resource_id}">删除</a>
+        {/if}
+    </td>
+</tr>
+{/foreach}

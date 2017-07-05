@@ -1,0 +1,28 @@
+<style>
+{literal}
+    .datepicker{z-index:1151 !important;}
+{/literal}
+</style>
+<form name="mcns_search" data-url="/home/index/ajaxSaveOpt">
+    {if $detail.optid}
+        <input type="hidden" name="optid" value="{$detail.optid}" />
+    {/if}
+    <div class="form-group col-xs-offset-2 col-xs-8">
+        <label><font color="red">*</font> 所属组件ID:</label>
+        <input class="form-control" name="cid" value="{$detail.cid}" type="number" {if $detail.optid}disabled=true{/if} />
+    </div>
+    <div class="form-group col-xs-offset-2 col-xs-8">
+        <label><font color="red">*</font> 选项名称:</label>
+        <input class="form-control" name="optname" value="{$detail.optname}" />
+        <p class="help-block"></p>
+    </div>
+    <div class="form-group col-xs-offset-2 col-xs-8">
+        <label><font color="red">*</font> 调整基数:</label>
+        <input type="number" class="form-control" name="base" value="{$detail.base}" />
+
+    </div>
+    <div class="form-group col-xs-offset-2 col-xs-8">
+        <label><font color="red">*</font> 调整系数:</label>
+        <input type="number" class="form-control" name="coefficient" value="{$detail.coefficient}" />
+    </div>
+</form>

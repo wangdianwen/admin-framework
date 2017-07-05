@@ -1,0 +1,46 @@
+<style>
+{literal}
+    .datepicker{z-index:1151 !important;}
+{/literal}
+</style>
+<form name="mcns_search" data-url="/home/index/ajaxSaveActivity">
+    {if $detail.aid}
+        <input type="hidden" name="aid" value="{$detail.aid}" />
+    {/if}
+    <div class="form-group col-xs-offset-2 col-xs-8">
+        <label><font color="red">*</font> 活动名称:</label>
+        <input class="form-control" name="name" value="{$detail.name}" />
+        <p class="help-block"></p>
+    </div>
+    <div class="form-group col-xs-offset-2 col-xs-8">
+        <label><font color="red">*</font> 活动描述:</label>
+        <textarea class="form-control" name="desc">{$detail.desc}</textarea>
+    </div>
+
+    <div class="form-group col-xs-offset-2 col-xs-8">
+        <label><font color="red">*</font> 截止日期:</label>
+        <input class="form-control" name="edate" id="edate" value="{$detail.edate}" readonly />
+    </div>
+</form>
+<script type="text/javascript" src="/js/datepicker/js/bootstrap-datepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="/js/datepicker/css/datepicker3.css">
+<script type="text/javascript" src="/js/datepicker/js/locales/bootstrap-datepicker.zh-CN.js"></script>
+<script type="text/javascript">
+{literal}
+    $(function(){
+        var time = new Date();
+        var y = time.getFullYear();
+        var m = time.getMonth()+1;
+        var d = time.getDate();
+        var date_picker_config = {
+            format: 'yyyy-mm-dd', 
+            autoclose : true,
+            viewMode: "days", 
+            minViewMode: "days",
+            startDate : y + '-' + m + '-' + d,
+            language: "zh-CN",
+        };
+        $('#edate').datepicker(date_picker_config);
+    });
+{/literal}
+</script>

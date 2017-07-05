@@ -1,0 +1,113 @@
+<div id="page-wrapper">
+    <div class="col-xs-12">
+        <h1 class="page-header">权限分配</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="alert alert-success">
+                【角色】{$role_info.name}
+                <br>    
+                【成员】{foreach from=$roleUsers item=user}{$user.name}&nbsp;&nbsp;{/foreach}
+            </div>
+        <div>
+    </div>
+
+    <div class="row">
+        <form action="" method="post">
+            <div class="col-xs-2">
+                <select name="module" id="module" class="form-control" mod="isEmpty" msg="">
+                    <option value=""></option>
+                    {foreach from=$modules item=item}
+                    <option value="{$item.module}">{$item.module}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div class="col-xs-2">
+                <select name="controller" id="controller" class="form-control" mod="isEmpty" msg="">
+                    {if $post.controller}<option value="{$post.controller}">{$post.controller}</option>{/if}
+                </select>
+            </div>
+        
+            <div class="col-xs-1 form-group">
+                <button type="submit" onclick="return checkform();" class="btn btn-primary">查询</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-8">
+            <div class="panel panel-default">
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>#</th>
+                                    <th>Module</th>
+                                    <th>Controller</th>
+                                    <th>Action</th>
+                                    <th>Title</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {foreach from=$resList item=res key=key}
+                                <tr class="">
+                                    <td><input type="checkbox" value="{$res.pk_resource_id}" {if $rolePrivRes[$res.pk_resource_id]}checked{/if}></td>
+                                    <td>{$res.pk_resource_id}</td>
+                                    <td>{$res.module}</td>
+                                    <td>{$res.controller}</td>
+                                    <td>{$res.action}</td>
+                                    <td>{$res.title}</td>
+                                </tr>
+                                {/foreach}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.table-responsive -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+        </div>
+        <!-- /.panel -->
+    </div>
+</div>
+<script src="/js/checkform.js"></script>
+<script>
+
+var role_id = {$role_info.pk_role_id};
+$(function() {
+    //moduel切换
+    $('#module').change(function(){
+        var module = $(this).val();
+        $('#controller option').remove();
+        $.post("/Privilege/Role/assignRolePriv/", { module: module, 'ajaxAct': 'getController'},
+            function(data){
+                var ctrls = jQuery.parseJSON(data);
+                $.each(ctrls, function(i, obj){
+                    var opt = '<option value="'+ obj.controller +'">'+ obj.controller +'</option>';
+                    $('#controller').append(opt);
+                });
+                
+            });
+    });
+    //权限分配
+    $( "input[type='checkbox']" ).change(function(){
+        var val = $(this).val();
+        var chk = this.checked;
+        if(chk){
+            var assignType = 'add';
+        }else{
+            var assignType = 'del';
+        }
+        $.post("/Privilege/Role/assignRolePriv/", { role_id: role_id, res_id: val, assignType: assignType,'ajaxAct': 'assignDo'},
+            function(data){
+                console.log(data);
+            });
+    });
+});
+
+select_location('module', '{$post.module}');
+</script>

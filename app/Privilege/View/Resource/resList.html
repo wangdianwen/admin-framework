@@ -1,0 +1,37 @@
+<div id="page-wrapper">
+    <div class="col-xs-12">
+        <h1 class="page-header">权限管理</h1>
+    </div>
+    {include file="Resource/include/searchForm.html"}
+    {include file="Resource/include/resListTable.html"}
+</div>
+<script src="/js/checkform.js"></script>
+<script>
+$(function() {
+    //moduel切换
+    $('#module').change(function(){
+        var module = $(this).val();
+        $('#controller option').remove();
+        $.post("/Privilege/Resource/resList/", { module: module, 'ajaxAct': 'getController'},
+            function(data){
+            console.log(data);
+                var ctrls = jQuery.parseJSON(data);
+                $.each(ctrls, function(i, obj){
+                    var opt = '<option value="'+ obj.controller +'">'+ obj.controller +'</option>';
+                    $('#controller').append(opt);
+                });
+                
+            });
+    });
+    $("#search_resource").click(function(){
+        var module = $("select[name='module']").val();
+        var controller = $("select[name='controller']").val();
+        $.post("/Privilege/Resource/resList", { module:module, controller:controller},
+            function(data){
+                $("#resource_list").html("");
+                $("#resource_list").html(data);
+            }
+        );
+    });
+});
+</script>

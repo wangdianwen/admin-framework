@@ -1,0 +1,55 @@
+<div id="page-wrapper">
+    <div class="col-xs-12">
+        <h1 class="page-header">用户管理</h1>
+    </div>
+    <div class="col-xs-8">
+        <div class="panel panel-default">
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>用户名</th>
+                                <th>邮箱</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {foreach from=$users item=user key=key}
+                            <tr class="">
+                                <td>{$user.pk_user_id}</td>
+                                <td>{$user.name}</td>
+                                <td>{$user.email}</td>
+                            </tr>
+                            {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+</div>
+<script src="/js/checkform.js"></script>
+<script>
+$(function() {
+   $("a[delUser]").click(function(){
+            var role_id = $(this).attr('role_id');
+            var user_id = $(this).attr('user_id');
+            var _this = $(this);
+            $.post("/home/privilege/roleUserDel/", { role_id: role_id, user_id: user_id},
+                function(data){
+                    if(data == 1){
+                        _this.parentNode.parentNode.remove();
+                    }
+            });
+       }); 
+});
+
+
+
+
+</script>

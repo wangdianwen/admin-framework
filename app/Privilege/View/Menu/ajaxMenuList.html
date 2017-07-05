@@ -1,0 +1,9 @@
+{foreach from=$menus item=menu key=key}
+<tr class="">
+    <td>{$menu.pk_menu_id}</td>
+    <td>{$menu.name}</td>
+    <td>{$menu.status}</td>
+    <td><input type="text" name="sort" menu_id="{$menu.pk_menu_id}" value="{$menu.sort}" style = "width:40px;"></td>
+    <td><a href="/Privilege/Menu/menuDel/?menu_id={$menu.pk_menu_id}">删除</a> </td>
+</tr>
+{/foreach}

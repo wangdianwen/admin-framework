@@ -1,0 +1,6 @@
+/Runtime
+/Uploads
+sftp-config.json
+*.txt
+*.pyc
+._*

@@ -1,0 +1,151 @@
+<link rel="stylesheet" type="text/css" href="/js/webuploader/webuploader.css">
+<script type="text/javascript" src="/js/webuploader/webuploader.js"></script>
+<script type="text/javascript" src="/js/bootstrap-maxlength.min.js"></script>
+
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-xs-12">
+            <h1 class="page-header">图片上传</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <div class="row">
+        <form name="mcns_search">
+            <div class="form-group col-xs-8">
+                <div id="viewDoc"></div>
+                <input type="hidden" name="doc" id="doc" value="" />
+                <div id="uploader" class="wu-example">
+                    <div id="thelist" class="uploader-list"></div>
+                    <div class="btns">
+                        <div id="picker" class="pull-left">上传附件</div>&nbsp;
+                        <button type="button" id="ctlBtn" class="btn btn-default">开始上传</button>
+                        <button type="button" onclick="window.location.reload()" class="btn btn-default">刷新</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <div class="form-group col-xs-8">
+            <label>图片url:</label>
+            <input class="form-control" id="picUrl"  readonly />
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-xs-8">
+            <label>图片:</label>
+            <img id="pic" />
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function() {
+        //设置分类数据
+        var res_cate = $("#res_cate").val();        
+        if(res_cate == ''){
+            var resCatId = $("#resCate").val();
+            $("#res_cate").val(resCatId);
+        }
+
+        $('textarea#desc').maxlength({
+              alwaysShow: true
+        });
+        
+        var $list = $('#thelist'),
+            $btn = $('#ctlBtn'),
+            state = 'pending',
+            uploader;
+
+        uploader = WebUploader.create({
+            //auto: true,
+            swf: '/js/webuploader/Uploader.swf',
+            server: '/Home/Index/uploadResPic',
+            pick: {
+                id:'#picker',
+                innerHTML: '选择文件',
+                multiple: false
+            },
+            fileVal: 'Filedata',
+            accept: {
+                title: 'Doc Files',
+                extensions: 'jpg,png,mp3'
+            },
+            fileNumLimit: '1',
+            formData: {
+                ajaxAct: 'uploadResPic'
+            },
+        });
+
+        // 当有文件添加进来的时候
+        uploader.on( 'fileQueued', function( file ) {
+            $list.append( '<div id="' + file.id + '" class="item">' +
+                '<h4 class="info">' + file.name + '</h4>' +
+                '<p class="state">等待上传...</p>' +
+            '</div>' );
+        });
+
+        // 文件上传过程中创建进度条实时显示。
+        uploader.on( 'uploadProgress', function( file, percentage ) {
+            var $li = $( '#'+file.id ),
+                $percent = $li.find('.progress .progress-bar');
+
+            // 避免重复创建
+            if ( !$percent.length ) {
+                $percent = $('<div class="progress progress-striped active">' +
+                  '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                  '</div>' +
+                '</div>').appendTo( $li ).find('.progress-bar');
+            }
+
+            var width = percentage * 100;       
+            var txt = '上传中' + Math.floor(width)+'%';
+            $li.find('p.state').text(txt);
+            $percent.css( 'width', width + '%' );
+        });
+
+        //上传成功
+        uploader.on( 'uploadSuccess', function( file, data ) {
+            if (data.url == ''){
+                alert('图片上传失败.');
+                return;
+            }
+            
+            $("#pic").attr('src', data.url);
+            $("#picUrl").attr('value', data.url);
+        });
+
+        //上传失败
+        uploader.on( 'uploadError', function( file ) {
+            $( '#'+file.id ).find('p.state').text('上传出错');
+        });
+
+        //上传完成
+        uploader.on( 'uploadComplete', function( file ) {
+           $( '#'+file.id ).find('.progress').fadeOut();
+        });
+
+        uploader.on( 'all', function( type ) {
+            if ( type === 'startUpload' ) {
+                state = 'uploading';
+            } else if ( type === 'stopUpload' ) {
+                state = 'paused';
+            } else if ( type === 'uploadFinished' ) {
+                state = 'done';
+            }
+
+            if ( state === 'uploading' ) {
+                $btn.text('暂停上传');
+            } else {
+                $btn.text('开始上传');
+            }
+        });
+
+        $btn.on( 'click', function() {
+            if ( state === 'uploading' ) {
+                uploader.stop();
+            } else {
+                uploader.upload();
+            }
+        });
+    });
+</script>

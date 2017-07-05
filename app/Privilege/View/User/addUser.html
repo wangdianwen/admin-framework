@@ -1,0 +1,36 @@
+<div id="page-wrapper">
+    <div class="col-lg-12">
+        <h1 class="page-header">用户添加</h1>
+    </div>
+    
+    <div class="col-xs-2">
+            <form role="form" action="" method="post">
+            <div class="form-group">
+                <label>用户名：</label>
+                <input name="name" value="{$user_info.name}" class="form-control" mod="isEmpty" msg="姓名 不能为空！">
+            </div>
+
+            <div class="form-group">
+                <label>真实姓名：</label>
+                <input name="realname" value="{$user_info.realname}" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label>密码：</label>
+                <input {if !empty($user_info)}disabled{/if} name="passwd" value="{$user_info.passwd}" class="form-control" mod="isEmpty" msg="必须添加初始密码">
+            </div>
+            <div class="form-group">
+                <label>Email：</label>
+                <input name="email" value="{$user_info.email}" class="form-control" >
+            </div>
+            <div class="form-group">
+                <label>电话：</label>
+                <input name="phone" value="{$user_info.phone}" class="form-control">
+            </div>
+            <div class="form-group">
+                <button type="submit" onclick="return checkform();" class="btn btn-primary">提交</button>
+            <div>
+            </form>
+    </div>
+</div>
+<script src="/js/checkform.js"></script>
